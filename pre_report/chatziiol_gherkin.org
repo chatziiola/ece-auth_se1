@@ -1,0 +1,138 @@
+
+#+TITLE: Gherkin
+#+DESCRIPTION: Μία γρήγορη εκτέλεση του μέρους μου
+#+AUTHOR: Lamprinos Chatziioannou
+#+FILETAGS:
+
+* View user's profile
+#+NAME: View User Profile
+#+begin_src Gherkin
+Feature: View User's Profile
+
+Scenario: View own user's profile
+Checking out one's own profile should easily let them see of their activity
+
+Given I have chosen to view a user's profile
+When that account is my account
+Then I see my imported music A
+And I see my rated entries
+And I see my shared Music B
+And I see a list of the people follow me
+And I see a list list of the people I follow back
+
+
+Scenario: View another user's profile
+Checking out a different user's account should include a follow/unfollow button.
+
+Given I have chosen to view a user's profile
+When that account is not my account
+Then I see their imported music A
+And I see their rated entries
+And I see their shared Music B
+And I see a list of the people that follow them
+And I see a list of the people they follow
+And I have the option to with follow/unfollow that user
+#+end_src
+
+
+
+* View Recommended Users to Follow
+#+NAME: View User Profile
+#+begin_src Gherkin
+Feature: View Recommended Users to Follow
+
+Scenario: Standard run
+
+Heading to the related page a user should be presented with a complete list of nearby users with matching musical interests
+
+When I choose to view the list of recommended users to follow
+Then I see a list of nearby users with similar taste
+And I see their full name
+And I see their profile photo 
+And I see our common followers
+And I have the option to follow/unfollow 
+#+end_src
+
+
+* Link Account to External Music Streaming Platform
+#+NAME:Link Account to External Music Streaming Platform
+#+begin_src Gherkin
+Feature: Link Account to External Music Streaming Platform 
+
+Scenario: Successful run
+
+A user should be able to log in to the music streaming service of their choice, should that be supported by our platform.
+
+# Given that service is in the list of supported music streaming services
+# And there is no error in the verification process
+When I select a music streaming service to log in to
+Then I should be refered to that service for external sign in
+And that platform, along with my account on it should be added to my profile information
+
+
+Scenario: Unsuccessful run / Abort
+
+
+A user unable to log in externally to a music platform should be redirected to the platform selection page.
+
+# Given that service is in the list of supported music streaming services
+# And there is an error in the verification process
+When I select a music streaming service to log in to
+Then I should be alerted of an error in the verification process
+And I should be redirected to the prompt to choose a music streaming service to log in
+
+#+end_src
+
+
+* Backup
+Feature: SoundBite creation
+  
+  Scenario: Song Selection
+    Given that the user has entered the SoundBite creation action
+    When the user is prompted to select a song to use
+    Then the user searches for musicA
+    And the user is redirected to the time interval selection screen
+    
+  Scenario: Successful time interval selection
+    Given that the user has successfully selected a song 
+    When the user is prompted to select a time interval for the SoundBite
+    And the user selects a valid time interval
+    | start     | 10 | non-negative maximum of song length |
+    | end       | 15 | non-negative maximum of song length |
+    | end-start | 5  | non-negative maximum of 10 seconds  | 
+    Then the resulting SoundBite is played for the user
+    And the user is redirected to the confirmation screen
+    And the user has the option to post the SoundBite
+    And the user has the option to re-make the SoundBite
+    And the user has the option to cancel the SoundBite creation
+    
+  Scenario: Unsuccessful time interval selection
+    Given that the user has successfully selected a song
+    When the user is prompted to select a time interval for the SoundBite
+    Then the user selects an invalid time interval
+    And the system alerts the user that the time interval is invalid
+    And the user is redirected to the time interval selection screen
+
+  Scenario: User posts
+    Given that the resulting SoundBite was played for the user
+    And the user was redirected to the confirmation screen
+    When the user selects the 'Post' option
+    Then the SoundBite is posted to the user's timeline
+    And the user is redirected to the feed
+    
+  Scenario: User remakes
+    Given that the resulting SoundBite was played for the user
+    And the user was redirected to the confirmation screen
+    When the user selects the 'Remake' option
+    Then the resulting SoundBite is discarded
+    And the user is redirected to the song selection prompt 
+    
+  Scenario: User cancels
+    Given that the resulting SoundBite was played for the user 
+    And the user was redirected to the confirmation screen
+    When the user selects the 'Cancel' option
+    Then the resulting SoundBite is discarded
+    And the user is redirected to the feed
+    
+    
+    
