@@ -1,0 +1,32 @@
+#+TITLE: SE1 Εργασία 1
+#+DESCRIPTION: Περιγραφή και αρχειοθέτηση της εργασίας στο πλαίσιο του  μαθήματος SE1
+#+AUTHOR: Lamprinos Chatziioannou
+#+FILETAGS:
+
+* Για τον τρόπο λειτουργίας
+Βάζω ένα deadline στον εαυτό μου για *γρήγορη* εξέταση της πιθανότητας
+να γράψω σε LaTeX, ως ενα πιο γρήγορο και έμπιστο format.
+
+Στο τέλος αυτής της ώρας αν έχω βρει αποδεκτή λύση θα στείλω μήνυμα:
+#+begin_quote
+Καλημέρα. Βλέποντας πως ως παραδοτέο υφίσταται μόνο το αρχείο pdf, είναι πιθανό να υπάρξει πρόβλημα με την συγγραφή της εργασίας σε κάποιο άλλο πρόγραμμα, προσομοιώνοντας το template που έχει δοθεί;
+#+end_quote
+
+* LaTeX templates checked:
+https://www.overleaf.com/latex/templates/simple-technical-documentation/mddffsrqcgqc
+- [ ] Logo
+
+https://www.overleaf.com/latex/templates/math-assignment-template/szrjcggjrxvm
+- Για τον τρόπο που φτιάχνει τον header
+
+https://www.overleaf.com/latex/templates/plantilla-ejercicios-unab/kxmfrzmzmmsv
+- Για τον τρόπο που φτιάχνει τον header
+- Αυτό παίζει να είναι ψιλοακριβώς όπως το θέλουμε
+  - ΠΟΙΟΣ ΓΡΑΦΕΙ ΙΣΠΑΝΙΚΑ ΣΤΑ templates :(
+
+https://www.overleaf.com/latex/templates/cranfield-assignment-template/nbzqpmrqnsqp.pdf
+- Για τον τρόπο που φτιάχνει τον header
+- Για την γενική μορφή
+
+https://www.overleaf.com/latex/templates/enacom-writing-template/wcrrdvqcgfcp
+- Για την όμορφη παρουσία του λογότυπου
