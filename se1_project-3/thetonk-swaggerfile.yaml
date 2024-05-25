@@ -1,0 +1,268 @@
+---
+openapi: 3.0.0
+info:
+  title: Wavelength algorithmic resources
+  version: 4.2.0
+  description: My implementation for the 3 algorithmic resources of Wavelength project (Lord have mercy)
+  contact:
+    name: Spyridon Baltsas
+    email: mspyrido@ece.auth.gr
+  license:
+    name: No license for this abomination!
+
+servers:
+- url:  http://42.0.69.69:1337/api/v1
+
+security:
+  - ApiKeyAuth: []
+
+paths:
+  /feed/{user-id}:
+    get:
+      summary: Get user's feed
+      operationId: getUserFeed
+      parameters:
+        - name: user-id
+          in: path
+          required: true
+          description: User's identification number in system.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: "Feed found sucessfully"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feed'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+  /getRecommendedUsers/{user-id}:
+    get:
+      summary: Get recommended users for the specific user
+      operationId: getRecommended
+      parameters:
+        - name: user-id
+          in: path
+          required: true
+          description: User's identification number in system.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: "Recommended users found successfully"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendedUsers'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+
+  /searchMusicEntity:
+    get:
+      summary: Search for a music entity
+      operationId: searchMusic
+      parameters:
+        - name: ID
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: date
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: ["artist","song","playlist","album"]
+        - name: keywords
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+        - name: name
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "Music entities found"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MusicEntity'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Wavelength-Api-Key
+  responses:
+    Unauthorized:
+      description: User is unauthorized, you need an API key to access this resource!
+      headers:
+        X_Wavelength_Api_Key:
+          schema:
+            type: string
+  schemas:
+    Feed:
+      type: object
+      properties:
+        lastUpdated:
+          type: integer
+          format: int64
+        posts:
+          type: array
+          items:
+           $ref: '#/components/schemas/Post'
+    RecommendedUsers:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
+    User:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          format: int64
+        profile_picture:
+          type: string
+          format: byte
+        about_me:
+          type: string
+        following:
+          type: integer
+          format: int32
+        followers:
+          type: integer
+          format: int32
+    Post:
+      type: object
+      properties:
+        userID:
+          type: integer
+          format: int64
+        postID:
+          type: integer
+          format: int64
+        postReactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reaction'
+        postComments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+    Reaction:
+      type: object
+      properties:
+        authorID:
+          type: integer
+          format: int64
+        value:
+          type: string
+          enum: ["laugh","cry","angry","love"]
+    Comment:
+      type: object
+      properties:
+        authorID:
+          type: integer
+          format: int64
+        content:
+          type: string
+    MusicEntity:
+      type: object
+      properties:
+        music_entity_id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        duration:
+          type: integer
+          format: int32
+        genre:
+          type: integer
+          format: int32
+        image:
+          type: string
+          format: byte
+        albums:
+          type: array
+          items:
+            $ref: '#/components/schemas/Album'
+        songs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Song'
+        artists:
+          type: array
+          items:
+            $ref: '#/components/schemas/Artist'
+      required:
+        - music_entity_id
+        - name
+        - duration
+        - genre
+        - image
+    Artist:
+      type: object
+      properties:
+        name:
+          type: string
+        ID:
+          type: integer
+          format: int64
+        albums:
+          type: array
+          items:
+            $ref: '#/components/schemas/Album'
+        image:
+          type: string
+          format: byte
+    Album:
+      type: object
+      properties:
+        name:
+          type: string
+        ID:
+          type: integer
+          format: int64
+        songs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Song'
+        artists:
+          type: array
+          items:
+            $ref: '#/components/schemas/Artist'
+        date:
+          type: string
+          format: date
+        image:
+          type: string
+          format: byte
+    Song:
+      type: object
+      properties:
+        name:
+          type: string
+        duration:
+          type: integer
+          format: int32
+        ID:
+          type: integer
+          format: int64
+        album:
+          $ref: '#/components/schemas/Album'
