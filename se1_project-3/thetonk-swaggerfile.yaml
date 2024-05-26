@@ -11,7 +11,7 @@ info:
     name: No license for this abomination!
 
 servers:
-- url:  http://42.0.69.69:1337/api/v1
+- url:  http://api.example.com:1337/api/v1
 
 security:
   - ApiKeyAuth: []
@@ -101,6 +101,8 @@ paths:
                   $ref: '#/components/schemas/MusicEntity'
         "401":
           $ref: '#/components/responses/Unauthorized'
+        "404":
+          $ref: '#/components/responses/NotFound'
 
 components:
   securitySchemes:
@@ -111,11 +113,45 @@ components:
   responses:
     Unauthorized:
       description: User is unauthorized, you need an API key to access this resource!
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedMessage'
       headers:
         X_Wavelength_Api_Key:
           schema:
             type: string
+    NotFound:
+      description: Resource not found
+      content:
+        appplication/json:
+          schema:
+            $ref: '#/components/schemas/NotFoundMessage'
   schemas:
+    UnauthorizedMessage:
+      type: object
+      properties:
+        message:
+          type: string
+          default: "You are unauthorized! You need an api key to log in"
+        code:
+          type: integer
+          default: 401
+      required:
+        - message
+        - code
+    NotFoundMessage:
+      type: object
+      properties:
+        message:
+          type: string
+          default: "Your requested resource is nowhere to be found! Perhaps try searching something else?"
+        code:
+          type: integer
+          default: 404
+      required:
+        - message
+        - code
     Feed:
       type: object
       properties:
