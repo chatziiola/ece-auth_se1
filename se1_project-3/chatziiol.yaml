@@ -15,18 +15,12 @@ paths:
       description: This can only be done by the logged in user.
       operationId: viewProfile
       parameters:
-        - name: loggedIn
-          in: cookie
-          required: true
-          description: Making sure that the use was connected.
-          schema:
-            $ref: '#/components/schemas/UserCookie'
         - name: userID
           in: query
           required: true
           description: userID for whom the profile should be returned
           schema:
-            type: integer
+           type: integer
       responses:
         '200':
           description: successful operation
@@ -49,12 +43,6 @@ paths:
       description: Views a specific rating from user
       operationId: getRating
       parameters:
-        - name: loggedIn
-          in: cookie
-          required: true
-          description: Making sure that the use was connected.
-          schema:
-            $ref: '#/components/schemas/UserCookie'
         - name: userID
           in: path
           description: The userID, whose rating we want to access
@@ -121,12 +109,6 @@ paths:
       description: Views a specific share from user
       operationId: getShare
       parameters:
-        - name: loggedIn
-          in: cookie
-          required: true
-          description: Making sure that the use was connected.
-          schema:
-            $ref: '#/components/schemas/UserCookie'
         - name: userID
           in: path
           description: The userID, whose rating we want to access
@@ -191,12 +173,6 @@ paths:
       description: Views a specific import from user
       operationId: getImport
       parameters:
-        - name: loggedIn
-          in: cookie
-          required: true
-          description: Making sure that the use was connected.
-          schema:
-            $ref: '#/components/schemas/UserCookie'
         - name: userID
           in: path
           description: The userID, whose rating we want to access
@@ -261,12 +237,6 @@ paths:
       description: Views a specific soundbite from user
       operationId: getSoundbite
       parameters:
-        - name: loggedIn
-          in: cookie
-          required: true
-          description: Making sure that the use was connected.
-          schema:
-            $ref: '#/components/schemas/UserCookie'
         - name: userID
           in: path
           description: The userID, whose rating we want to access
@@ -689,28 +659,4 @@ components:
           example: 1
       xml:
         name: user
-    ApiResponse:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        type:
-          type: string
-        message:
-          type: string
-      xml:
-        name: '##default'
-  securitySchemes:
-    petstore_auth:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
-          scopes:
-            write:pets: modify pets in your account
-            read:pets: read your pets
-    api_key:
-      type: apiKey
-      name: api_key
-      in: header
+
