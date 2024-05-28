@@ -12,12 +12,12 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.0
 servers:
-  - url: https://wavelength/musicentities/api/v1
+- url:  http://api.example.com:1337/api/v1
 tags:
-  - name: music-entitiy
-    description: Collection of all music entities of the app
+  - name: music-entity
+    description: Collection of all music entities related endpoints of the app
   - name: user
-    description: Operations about user
+    description: Application endpoints about user
 paths:
   /music-entity:
     get:
@@ -339,8 +339,190 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Song'
+  /feed/{user-id}:
+    get:
+      tags:
+        - user
+      summary: Get user's feed
+      operationId: getUserFeed
+      parameters:
+        - name: user-id
+          in: path
+          required: true
+          description: User's identification number in system.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: "Feed found sucessfully"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feed'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+  /getRecommendedUsers/{user-id}:
+    get:
+      tags:
+        - user
+      summary: Get recommended users for the specific user
+      operationId: getRecommended
+      parameters:
+        - name: user-id
+          in: path
+          required: true
+          description: User's identification number in system.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: "Recommended users found successfully"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendedUsers'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+
+  /searchMusicEntity:
+    get:
+      tags:
+        - music-entity
+      summary: Search for a music entity
+      operationId: searchMusic
+      parameters:
+        - name: ID
+          in: query
+          schema:
+            type: integer
+            format: int64
+        - name: date
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: ["artist","song","playlist","album"]
+        - name: keywords
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+        - name: name
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "Music entities found"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MusicEntity'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "404":
+          $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    Unauthorized:
+      description: User is unauthorized, you need an API key to access this resource!
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedMessage'
+      headers:
+        X_Wavelength_Api_Key:
+          schema:
+            type: string
+    NotFound:
+      description: Resource not found
+      content:
+        appplication/json:
+          schema:
+            $ref: '#/components/schemas/NotFoundMessage'
   schemas:
+    UnauthorizedMessage:
+      type: object
+      properties:
+        message:
+          type: string
+          default: "You are unauthorized! You need an api key to log in"
+        code:
+          type: integer
+          default: 401
+      required:
+        - message
+        - code
+    NotFoundMessage:
+      type: object
+      properties:
+        message:
+          type: string
+          default: "Your requested resource is nowhere to be found! Perhaps try searching something else?"
+        code:
+          type: integer
+          default: 404
+      required:
+        - message
+        - code
+    Feed:
+      type: object
+      properties:
+        lastUpdated:
+          type: integer
+          format: int64
+        posts:
+          type: array
+          items:
+           $ref: '#/components/schemas/Post'
+    RecommendedUsers:
+      type: array
+      items:
+        type: integer
+        format: int64
+    Post:
+      type: object
+      properties:
+        userID:
+          type: integer
+          format: int64
+        postID:
+          type: integer
+          format: int64
+        postReactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reaction'
+        postComments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+    Reaction:
+      type: object
+      properties:
+        authorID:
+          type: integer
+          format: int64
+        value:
+          type: string
+          enum: ["laugh","cry","angry","love"]
+    Comment:
+      type: object
+      properties:
+        authorID:
+          type: integer
+          format: int64
+        content:
+          type: string
     MusicEntity:
       type: object
       properties:
@@ -387,6 +569,9 @@ components:
             - rap
             - rock
             - laiko
+            - classic
+            - others
+            - trash
         songs:
           type: array
           items:
