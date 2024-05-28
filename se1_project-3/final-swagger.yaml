@@ -33,16 +33,19 @@ paths:
             type: string
         - name: date
           in: query
+          required: false
           schema:
             type: string
             format: date-time
         - name: type
           in: query
+          required: false
           schema:
             type: string
             enum: ["artist","song","playlist","album"]
         - name: keywords
           in: query
+          required: true
           schema:
             type: array
             items:
