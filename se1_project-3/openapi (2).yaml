@@ -1,0 +1,252 @@
+openapi: 3.0.3
+info:
+  title: Wavelength User API
+  description: |-
+    Using users who use our user API
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: sussybaka@wavelength.gg
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+tags:
+  - name: User
+    description: Operations on the User resource
+  - name: Post
+    description: Operations on the Post resource
+paths:
+  /user/{user_id}/add_follower:
+    post:
+      tags:
+        - User
+      summary: Add a new follower for a user
+      operationId: addUserFollower
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: user_to_follow
+          in: query
+          description: The ID of the user to follow
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimpleResponse'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SimpleResponse'
+        '404':
+          description: User not found
+  /user/{user_id}/followers:
+    get:
+      tags:
+        - User
+      summary: Returns the followers of a user
+      operationId: getUserFollowers
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BasicUser'          
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BasicUser'
+        '400':
+          description: Invalid user_id supplied
+  /user/{user_id}/following:
+    get:
+      tags:
+        - User
+      summary: Returns the followings of a user
+      operationId: getUserFollowing
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BasicUser'          
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BasicUser'
+        '404':
+          description: User not found
+  /user/{user_id}/post:
+    post:
+      tags:
+        - Post
+      summary: Uploads a post for a user
+      operationId: addUserPost
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Add a post for the user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Post'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '400':
+          description: Invalid request body
+        '404':
+          description: User not found
+  /user/{user_id}/posts:
+    get:
+      tags:
+        - Post
+      summary: Gets a user's posts
+      operationId: getUserPosts
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'          
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+        '404':
+          description: User not found
+  /post/{post_id}:
+    get:
+      tags:
+        - Post
+      summary: Gets a post by ID
+      operationId: getPost
+      parameters:
+        - name: post_id
+          in: path
+          description: ID of the post
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '404':
+          description: Post not found
+components:
+  schemas:
+    BasicUser:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          format: int64
+          example: 5231
+        name:
+          type: string
+          example: Sussy Baka
+      xml:
+        name: BasicUser
+    Post:
+      type: object
+      properties:
+        event_id:
+          type: integer
+          format: int64
+          example: 5231
+          description: The ID of the event (e.g. Rating) that the post is about
+        description:
+          type: string
+          example: "This is my post"
+          description: The text body of the post
+        contents:
+          type: string
+          format: binary
+          description: The binary contents of the post (e.g. Image)
+      xml:
+        name: Post
+    SimpleResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 200
+        type:
+          type: string
+          example: "Success"
+        message:
+          type: string
+          example: "Successfully completed API operation"
+      xml:
+        name: '##default'
