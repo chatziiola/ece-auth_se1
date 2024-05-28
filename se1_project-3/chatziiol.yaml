@@ -1,0 +1,719 @@
+openapi: 3.0.3
+info:
+  title: User Resource
+  version: "1.0"
+  description: Hello again 
+tags:
+  - name: user
+    description: Everything about your users.
+paths:
+  /user:
+    get:
+      tags:
+        - user
+      summary: Get user profile
+      description: This can only be done by the logged in user.
+      operationId: viewProfile
+      parameters:
+        - name: loggedIn
+          in: cookie
+          required: true
+          description: Making sure that the use was connected.
+          schema:
+            $ref: '#/components/schemas/UserCookie'
+        - name: userID
+          in: query
+          required: true
+          description: userID for whom the profile should be returned
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: unauthorized
+        '404':
+          description: User not found.
+  /user/rating:
+    get:
+      tags:
+        - user
+      summary: Views a specific rating from user
+      description: Views a specific rating from user
+      operationId: getRating
+      parameters:
+        - name: loggedIn
+          in: cookie
+          required: true
+          description: Making sure that the use was connected.
+          schema:
+            $ref: '#/components/schemas/UserCookie'
+        - name: userID
+          in: query
+          description: The userID, whose rating we want to access
+          required: true
+          schema:
+            type: string
+        - name: ratingID
+          in: query
+          description: The ratingID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rating'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Rating'
+        '400':
+          description: Invalid userID/ratingID combination. No such rating exists.
+        '401':
+          description: User not logged in
+    post:
+      tags:
+        - user
+      summary: Creates a rating 
+      description: This can only be done by the logged in user.
+      operationId: postRating
+      parameters:
+        - name: userID
+          in: query
+          description: The user name for login
+          required: true
+          schema:
+            type: string
+        - name: rating
+          in: query
+          description: The ratingID
+          required: true
+          schema:
+          # This one should be changed - see how
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Successful operation
+        '401':
+          description: User not authorized to perform the operation. Either not logged in or trying to alter another user's information.
+  /user/share:
+    get:
+      tags:
+        - user
+      summary: Views a specific share from user
+      description: Views a specific share from user
+      operationId: getShare
+      parameters:
+        - name: loggedIn
+          in: cookie
+          required: true
+          description: Making sure that the use was connected.
+          schema:
+            $ref: '#/components/schemas/UserCookie'
+        - name: userID
+          in: query
+          description: The userID, whose rating we want to access
+          required: true
+          schema:
+            type: string
+        - name: shareID
+          in: query
+          description: The shareID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Share'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Share'
+        '400':
+          description: Invalid userID/shareID combination. No such share exists.
+    post:
+      tags:
+        - user
+      summary: Creates a share 
+      description: This can only be done by the logged in user.
+      operationId: postShare
+      parameters:
+        - name: userID
+          # Change it to path?
+          in: query
+          description: The user name for login
+          required: true
+          schema:
+            type: string
+        - name: share
+          in: query
+          description: The shareID
+          required: true
+          schema:
+          # This one should be changed - see how
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Successful operation
+        '401':
+          description: User not authorized to perform the operation. Either not logged in or trying to alter another user's information.
+  /user/import:
+    get:
+      tags:
+        - user
+      summary: Views a specific import from user
+      description: Views a specific import from user
+      operationId: getImport
+      parameters:
+        - name: loggedIn
+          in: cookie
+          required: true
+          description: Making sure that the use was connected.
+          schema:
+            $ref: '#/components/schemas/UserCookie'
+        - name: userID
+          in: query
+          description: The userID, whose rating we want to access
+          required: true
+          schema:
+            type: string
+        - name: importID
+          in: query
+          description: The importID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Import'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Import'
+        '400':
+          description: Invalid userID/importID combination. No such import exists.
+    post:
+      tags:
+        - user
+      summary: Creates a import 
+      description: This can only be done by the logged in user.
+      operationId: postImport
+      parameters:
+        - name: userID
+          # Change it to path?
+          in: query
+          description: The user name for login
+          required: true
+          schema:
+            type: string
+        - name: import
+          in: query
+          description: The importID
+          required: true
+          schema:
+          # This one should be changed - see how
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Successful operation
+        '401':
+          description: User not authorized to perform the operation. Either not logged in or trying to alter another user's information.
+  /user/soundbite:
+    get:
+      tags:
+        - user
+      summary: Views a specific soundbite from user
+      description: Views a specific soundbite from user
+      operationId: getSoundbite
+      parameters:
+        - name: loggedIn
+          in: cookie
+          required: true
+          description: Making sure that the use was connected.
+          schema:
+            $ref: '#/components/schemas/UserCookie'
+        - name: userID
+          in: query
+          description: The userID, whose rating we want to access
+          required: true
+          schema:
+            type: string
+        - name: soundbiteID
+          in: query
+          description: The soundbiteID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Soundbite'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Soundbite'
+        '400':
+          description: Invalid userID/soundbiteID combination. No such soundbite exists.
+    post:
+      tags:
+        - user
+      summary: Creates a soundbite 
+      description: This can only be done by the logged in user.
+      operationId: postSoundbite
+      parameters:
+        - name: userID
+          # Change it to path?
+          in: query
+          description: The user name for login
+          required: true
+          schema:
+            type: string
+        - name: soundbite
+          in: query
+          description: The soundbiteID
+          required: true
+          schema:
+          # This one should be changed - see how
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Successful operation
+        '401':
+          description: User not authorized to perform the operation. Either not logged in or trying to alter another user's information.
+  /user/follow:
+    post:
+      tags:
+         - user
+      summary: Creates list of users with given input array
+      description: Creates list of users with given input array
+      operationId: postFollow
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: successful operation
+  /user/followers:
+    post:
+      tags:
+        - user
+      summary: Creates list of users with given input array
+      description: Creates list of users with given input array
+      operationId: postFollowers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: successful operation
+  /user/following:
+    post:
+      tags:
+        - user
+      summary: Creates list of users with given input array
+      description: Creates list of users with given input array
+      operationId: postFollowing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: successful operation
+  /user/post:
+    post:
+      tags:
+       - user
+      summary: Creates list of users with given input array
+      description: Creates list of users with given input array
+      operationId: postPost
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: successful operation
+components:
+  schemas:
+    Time:
+      type: object
+      properties:
+        hours:
+          type: integer
+          format: int64
+          example: 10
+        minutes:
+          type: integer
+          format: int64
+          example: 10
+        seconds:
+          type: integer
+          format: int64
+          example: 10
+    Album:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Brave New World"
+        albumid:
+          type: integer
+          example: 1987
+        #FIXME 
+        genre:
+          type: integer
+        songs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Song'
+        image:
+          type: object
+        artists:
+          type: array
+          items:
+            $ref: '#/components/schemas/Artist'
+      xml:
+        name: Album
+    Song:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Hurt"
+        duration:
+            $ref: '#/components/schemas/Time'
+        id:
+          type: integer
+          example: 1986
+        album:
+            $ref: '#/components/schemas/Album'
+      xml:
+        name: song
+    Artist:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Metallica"
+        id:
+          type: integer
+          example: 1312
+        albums:
+          type: array
+          items:
+            $ref: '#/components/schemas/Album'
+        image:
+          type: object
+      xml:
+        name: artist
+    Creation:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        name:
+          type: integer
+          format: int64
+          example: 198772
+        image:
+          type: object
+        duration:
+          $ref: '#/components/schemas/Time'
+        genre:
+          type: integer
+          format: int64
+          example: 198772 # need to add constraints here
+        artists:
+          type: array
+          items:
+            $ref: '#/components/schemas/Artist'
+        songs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Song'
+        albums:
+          type: array
+          items:
+            $ref: '#/components/schemas/Album'
+      xml:
+        name: creation
+    MusicEntity:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        name:
+          type: integer
+          format: int64
+          example: 198772
+        image:
+          type: object
+        duration:
+          $ref: '#/components/schemas/Time'
+        genre:
+          type: integer
+          format: int64
+          example: 198772 # need to add constraints here
+        artists:
+          type: array
+          items:
+            $ref: '#/components/schemas/Artist'
+        songs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Song'
+        Albums:
+          type: array
+          items:
+            $ref: '#/components/schemas/Album'
+      xml:
+        name: musicEntity
+    Soundbite:
+      type: object
+      properties:
+        soundBiteID:
+          type: integer
+          format: int64
+          example: 10
+        userID:
+          type: integer
+          format: int64
+          example: 198772
+        song:
+          $ref: '#/components/schemas/Song'
+        tStart:
+          type: integer
+          description: Starting time in seconds
+          example: 9 # constraints
+        tEnd:
+          type: integer
+          description: End time in seconds
+          example: 9 # constraints
+      xml:
+        name: rating
+    Rating:
+      type: object
+      properties:
+        ratingId:
+          type: integer
+          format: int64
+          example: 10
+        userID:
+          type: integer
+          format: int64
+          example: 198772
+        musicEntity:
+          $ref: '#/components/schemas/MusicEntity'
+        rating:
+          type: integer
+          example: 9 # constraints
+        text:
+          type: string
+          example: "I really liked this one"
+      xml:
+        name: rating
+    Share:
+      type: object
+      properties:
+        shareID:
+          type: integer
+          format: int64
+          example: 10
+        userID:
+          type: integer
+          format: int64
+          example: 198772
+        musicEntity:
+          $ref: '#/components/schemas/MusicEntity'
+        text:
+          type: string
+          example: "I really liked this one"
+      xml:
+        name: share
+    Import:
+      type: object
+      properties:
+        importID:
+          type: integer
+          format: int64
+          example: 10
+        userID:
+          type: integer
+          format: int64
+          example: 198772
+        platform:
+          #the fuck with enum
+          type: integer
+        creation:
+          $ref: '#/components/schemas/Creation'
+        text:
+          type: string
+          example: "Enjoy my newest album"
+      xml:
+        name: share
+    UserCookie:
+      type: object
+      properties:
+        user:
+          type: integer
+          description: encrypted
+      xml:
+        name: userCookie
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        username:
+          type: string
+          example: theUser
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        password:
+          type: string
+          example: '12345'
+        phone:
+          type: string
+          example: '12345'
+        userStatus:
+          type: integer
+          description: User Status
+          format: int32
+          example: 1
+      xml:
+        name: user
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+      xml:
+        name: '##default'
+  securitySchemes:
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
+          scopes:
+            write:pets: modify pets in your account
+            read:pets: read your pets
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
