@@ -1,0 +1,427 @@
+openapi: 3.0.3
+info:
+  title: Wavelength Music Entities - OpenAPI 3.0
+  description: >-
+    This is Wavelength's API containing all endpoints regarding the app's Music
+    Entities
+  contact:
+    name: Christos Ioakeimidis
+    email: cioakeim@ece.auth.gr
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: https://wavelength/musicentities/api/v1
+tags:
+  - name: music-entitiy
+    description: Collection of all music entities of the app
+  - name: user
+    description: Operations about user
+paths:
+  /music-entity:
+    get:
+      tags:
+        - music-entity
+      description: Get a list of music entities based on search parameters
+      operationId: getMusicEntities
+      parameters:
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: date
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: ["artist","song","playlist","album"]
+        - name: keywords
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Music Entities found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  entities:
+                    items:
+                      $ref: '#/components/schemas/MusicEntity'
+  /music-entity/{id}:
+    get:
+      tags:
+        - music-entity
+      description: Get a specific music entity by ID
+      operationId: getMusicEntitybyId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicEntity'
+  /music-entity/song:
+    get:
+      tags:
+        - music-entity
+      description: Get collection of songs
+      operationId: getSong
+      parameters:
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  songs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Song'
+  /music-entity/song/{id}:
+    get:
+      tags:
+        - music-entity
+      description: Get a specific song by entity ID
+      operationId: getSongbyId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Song'
+  /music-entity/album:
+    get:
+      tags:
+        - music-entity
+      description: Get collection of albums
+      operationId: getAlbum
+      parameters:
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  albums:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Album'
+  /music-entity/album/{id}:
+    get:
+      tags:
+        - music-entity
+      description: Get a specific album by entity ID
+      operationId: getAlbumbyId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Album'
+  /music-entity/artist:
+    get:
+      tags:
+        - music-entity
+      description: Get collection of artists
+      operationId: getArtist
+      parameters:
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  artists:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Artist'
+  /music-entity/artist/{id}:
+    get:
+      tags:
+        - music-entity
+      description: Get a specific artist by entity ID
+      operationId: getArtistbyId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Artist'
+  /music-entity/playlist:
+    get:
+      tags:
+        - music-entity
+      description: Get collection of playlists
+      operationId: getPlaylist
+      parameters:
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  playlists:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Playlist'
+  /music-entity/playlist/{id}:
+    get:
+      tags:
+        - music-entity
+      description: Get a specific playlist by entity ID
+      operationId: getPlaylistbyId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Playlist'
+  /user/{user-id}/link-to-music-service/{platform}:
+    post:
+      tags:
+        - user
+      description: Complete authentication using the aquired authentication token
+      operationId: completeAuthentication
+      parameters:
+        - name: user-id
+          in: path
+          required: true
+          description: ID of the user's Wavelength account
+          schema:
+            type: integer
+            format: int64
+        - name: platform
+          in: path
+          required: true
+          description: Specific platform chosen
+          schema:
+            type: string
+            enum:
+              - spotify
+              - soundcloud
+              - apple-music
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                auth-token:
+                  type: string
+                  description: The authentication toke provided by the streaming service
+              required:
+                - code
+      responses:
+        '200':
+          description: External Service successfully linked
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Linking was successful
+  /user/{user-id}/external-creations/{platform}:
+    get:
+      tags:
+        - user
+      description: Retrieve the users creations from the specific platform
+      parameters:
+        - name: user-id
+          in: path
+          required: true
+          description: ID of the user's Wavelength account
+          schema:
+            type: integer
+            format: int64
+        - name: platform
+          in: path
+          required: true
+          description: Specific platform chosen
+          schema:
+            type: string
+            enum:
+              - spotify
+              - soundcloud
+              - apple-music
+      responses:
+        '200':
+          description: Successful retrieval
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user-songs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Song'
+components:
+  schemas:
+    MusicEntity:
+      type: object
+      properties:
+        entity-id:
+          type: integer
+          format: int64
+          example: 15
+        name:
+          type: string
+          example: Yparxo
+        entity-type:
+          type: string
+          enum:
+            - song
+            - album
+            - artist
+            - playlist
+    Song:
+      type: object
+      properties:
+        name:
+          type: string
+          example: To agalma
+        duration:
+          type: integer
+          format: minutes-seconds
+        entity-id:
+          type: integer
+          format: int64
+        album:
+          $ref: '#/components/schemas/Album'
+    Album:
+      type: object
+      properties:
+        name:
+          type: string
+          example: The Wall
+        entity-id:
+          type: integer
+          format: int64
+        genre:
+          type: string
+          enum:
+            - rap
+            - rock
+            - laiko
+        songs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Song'
+        date:
+          type: string
+          format: year-month
+        artists:
+          type: array
+          items:
+            $ref: '#/components/schemas/Artist'
+    Artist:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Pink Floyd
+        entity-id:
+          type: integer
+          format: int64
+        albums:
+          type: array
+          items:
+            $ref: '#/components/schemas/Album'
+    Playlist:
+      type: object
+      properties:
+        name:
+          type: string
+          example: My awesome playlist
+        songs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Song'
+        entity-id:
+          type: integer
+          format: int64
+        creator-id:
+          type: integer
+          format: int64
+          description: ID of the user who created this playlist
