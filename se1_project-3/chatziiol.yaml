@@ -89,7 +89,7 @@ paths:
       operationId: postRating
       parameters:
         - name: userID
-          in: query
+          in: path
           description: The user name for login
           required: true
           schema:
@@ -159,8 +159,7 @@ paths:
       operationId: postShare
       parameters:
         - name: userID
-          # Change it to path?
-          in: query
+          in: path
           description: The user name for login
           required: true
           schema:
@@ -230,8 +229,7 @@ paths:
       operationId: postImport
       parameters:
         - name: userID
-          # Change it to path?
-          in: query
+          in: path
           description: The user name for login
           required: true
           schema:
@@ -301,8 +299,7 @@ paths:
       operationId: postSoundbite
       parameters:
         - name: userID
-          # Change it to path?
-          in: query
+          in: path
           description: The user name for login
           required: true
           schema:
