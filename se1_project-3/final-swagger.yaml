@@ -35,14 +35,13 @@ paths:
           in: query
           required: false
           schema:
-            type: string
-            format: date-time
+            $ref: '#/components/schemas/Date'
         - name: type
           in: query
           required: false
           schema:
             type: string
-            enum: ["artist","song","playlist","album"]
+            enum: ['artist','song','playlist','album']
         - name: keywords
           in: query
           required: true
@@ -257,6 +256,296 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Playlist'
+  /user:
+    get:
+      tags:
+        - user
+      summary: Get user profile
+      description: This can only be done by the logged in user.
+      operationId: viewProfile
+      parameters:
+        - name: userID
+          in: query
+          required: true
+          description: userID for whom the profile should be returned
+          schema:
+           type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /user/{userID}/rating:
+    get:
+      tags:
+        - user
+      summary: Views a specific rating from user
+      description: Views a specific rating from user
+      operationId: getRating
+      parameters:
+        - name: userID
+          in: path
+          description: The userID, whose rating we want to access
+          required: true
+          schema:
+            type: string
+        - name: ratingID
+          in: query
+          description: The ratingID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rating'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Rating'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      tags:
+        - user
+      summary: Creates a rating 
+      description: This can only be done by the logged in user.
+      operationId: postRating
+      parameters:
+        - name: userID
+          in: path
+          description: The user name for login
+          required: true
+          schema:
+            type: string
+        - name: rating
+          in: query
+          description: The rating
+          required: true
+          schema:
+            $ref: '#/components/schemas/Rating'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Rating'
+      responses:
+        '200':
+          description: Successful operation
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /user/{userID}/share:
+    get:
+      tags:
+        - user
+      summary: Views a specific share from user
+      description: Views a specific share from user
+      operationId: getShare
+      parameters:
+        - name: userID
+          in: path
+          description: The userID, whose rating we want to access
+          required: true
+          schema:
+            type: string
+        - name: shareID
+          in: query
+          description: The shareID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Share'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Share'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      tags:
+        - user
+      summary: Creates a share 
+      description: This can only be done by the logged in user.
+      operationId: postShare
+      parameters:
+        - name: userID
+          in: path
+          description: The user name for login
+          required: true
+          schema:
+            type: string
+        - name: share
+          in: query
+          description: The shareID
+          required: true
+          schema:
+            $ref: '#/components/schemas/Share'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Share'
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /user/{userID}/import:
+    get:
+      tags:
+        - user
+      summary: Views a specific import from user
+      description: Views a specific import from user
+      operationId: getImport
+      parameters:
+        - name: userID
+          in: path
+          description: The userID, whose rating we want to access
+          required: true
+          schema:
+            type: string
+        - name: importID
+          in: query
+          description: The importID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Import'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags:
+        - user
+      summary: Creates a import 
+      description: This can only be done by the logged in user.
+      operationId: postImport
+      parameters:
+        - name: userID
+          in: path
+          description: The user name for login
+          required: true
+          schema:
+            type: string
+        - name: import
+          in: query
+          description: The importID
+          required: true
+          schema:
+          # This one should be changed - see how
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Import'
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /user/{userID}/soundbite:
+    get:
+      tags:
+        - user
+      summary: Views a specific soundbite from user
+      description: Views a specific soundbite from user
+      operationId: getSoundbite
+      parameters:
+        - name: userID
+          in: path
+          description: The userID, whose rating we want to access
+          required: true
+          schema:
+            type: string
+        - name: soundbiteID
+          in: query
+          description: The soundbiteID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Soundbite'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Soundbite'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags:
+        - user
+      summary: Creates a soundbite 
+      description: This can only be done by the logged in user.
+      operationId: postSoundbite
+      parameters:
+        - name: userID
+          in: path
+          description: The user name for login
+          required: true
+          schema:
+            type: string
+        - name: soundbite
+          in: query
+          description: The soundbiteID
+          required: true
+          schema:
+          # This one should be changed - see how
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Soundbite'
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
   /user/{user-id}/link-to-music-service/{platform}:
     post:
       tags:
@@ -354,13 +643,13 @@ paths:
             type: integer
             format: int64
       responses:
-        "200":
-          description: "Feed found sucessfully"
+        '200':
+          description: 'Feed found sucessfully'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Feed'
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
   /getRecommendedUsers/{user-id}:
     get:
@@ -377,13 +666,13 @@ paths:
             type: integer
             format: int64
       responses:
-        "200":
-          description: "Recommended users found successfully"
+        '200':
+          description: 'Recommended users found successfully'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/RecommendedUsers'
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
 
   /searchMusicEntity:
@@ -401,13 +690,12 @@ paths:
         - name: date
           in: query
           schema:
-            type: string
-            format: date-time
+            $ref: '#/components/schemas/Date'
         - name: type
           in: query
           schema:
             type: string
-            enum: ["artist","song","playlist","album"]
+            enum: ['artist','song','playlist','album']
         - name: keywords
           in: query
           schema:
@@ -419,17 +707,17 @@ paths:
           schema:
             type: string
       responses:
-        "200":
-          description: "Music entities found"
+        '200':
+          description: 'Music entities found'
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/MusicEntity'
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
-        "404":
+        '404':
           $ref: '#/components/responses/NotFound'
 components:
   responses:
@@ -443,6 +731,12 @@ components:
         X_Wavelength_Api_Key:
           schema:
             type: string
+    BadRequest:
+      description: Resource not found
+      content:
+        appplication/json:
+          schema:
+            $ref: '#/components/schemas/BadRequest'
     NotFound:
       description: Resource not found
       content:
@@ -455,7 +749,7 @@ components:
       properties:
         message:
           type: string
-          default: "You are unauthorized! You need an api key to log in"
+          default: 'You are unauthorized! You need an api key to log in'
         code:
           type: integer
           default: 401
@@ -467,10 +761,22 @@ components:
       properties:
         message:
           type: string
-          default: "Your requested resource is nowhere to be found! Perhaps try searching something else?"
+          default: 'Your requested resource is nowhere to be found! Perhaps try searching something else?'
         code:
           type: integer
           default: 404
+      required:
+        - message
+        - code
+    BadRequest:
+      type: object
+      properties:
+        message:
+          type: string
+          default: 'The request was malformed. Try modifying your input.'
+        code:
+          type: integer
+          default: 400
       required:
         - message
         - code
@@ -514,7 +820,7 @@ components:
           format: int64
         value:
           type: string
-          enum: ["laugh","cry","angry","love"]
+          enum: ['laugh','cry','angry','love']
     Comment:
       type: object
       properties:
@@ -526,10 +832,19 @@ components:
     MusicEntity:
       type: object
       properties:
+        duration:
+          type: integer
+          format: seconds
+          example: 300
+        image:
+          type: string
+          format: byte
         entity-id:
           type: integer
           format: int64
           example: 15
+        genre:
+          $ref: '#/components/schemas/Genre'
         name:
           type: string
           example: Yparxo
@@ -540,6 +855,18 @@ components:
             - album
             - artist
             - playlist
+        albums:
+          type: array
+          items:
+            $ref: '#/components/schemas/Album'
+        songs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Song'
+        artists:
+          type: array
+          items:
+            $ref: '#/components/schemas/Artist'            
     Song:
       type: object
       properties:
@@ -564,21 +891,16 @@ components:
           type: integer
           format: int64
         genre:
-          type: string
-          enum:
-            - rap
-            - rock
-            - laiko
-            - classic
-            - others
-            - trash
+            $ref: '#/components/schemas/Genre'
         songs:
           type: array
           items:
             $ref: '#/components/schemas/Song'
-        date:
+        image:
           type: string
-          format: year-month
+          format: byte
+        date:
+          $ref: '#/components/schemas/Date'
         artists:
           type: array
           items:
@@ -596,6 +918,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Album'
+        image:
+          type: string
+          format: byte
     Playlist:
       type: object
       properties:
@@ -613,3 +938,146 @@ components:
           type: integer
           format: int64
           description: ID of the user who created this playlist
+        date:
+          $ref: '#/components/schemas/Date'
+    Genre:
+      type: string
+      enum:
+          - rap
+          - rock
+          - laiko
+          - classic
+          - others
+          - trash
+    Creation:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        name:
+          type: integer
+          format: int64
+          example: 198772
+        duration:
+          type: integer
+          format: seconds
+          example: 300
+        image:
+          type: string
+          format: byte
+        genre:
+          $ref: '#/components/schemas/Genre'
+        artists:
+          type: array
+          items:
+            $ref: '#/components/schemas/Artist'
+        songs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Song'
+        albums:
+          type: array
+          items:
+            $ref: '#/components/schemas/Album'
+    Soundbite:
+      type: object
+      properties:
+        soundBiteID:
+          type: integer
+          format: int64
+          example: 10
+        userID:
+          type: integer
+          format: int64
+          example: 198772
+        song:
+          $ref: '#/components/schemas/Song'
+        tStart:
+          type: integer
+          description: Starting time in seconds
+          example: 9 # constraints
+        tEnd:
+          type: integer
+          description: End time in seconds
+          example: 9 # constraints
+    Rating:
+      type: object
+      properties:
+        ratingId:
+          type: integer
+          format: int64
+          example: 10
+        userID:
+          type: integer
+          format: int64
+          example: 198772
+        musicEntity:
+          $ref: '#/components/schemas/MusicEntity'
+        rating:
+          type: integer
+          example: 9 # constraints
+        text:
+          type: string
+          example: 'I really liked this one'
+    Share:
+      type: object
+      properties:
+        shareID:
+          type: integer
+          format: int64
+          example: 10
+        userID:
+          type: integer
+          format: int64
+          example: 198772
+        musicEntity:
+          $ref: '#/components/schemas/MusicEntity'
+        text:
+          type: string
+          example: 'I really liked this one'
+    Import:
+      type: object
+      properties:
+        importID:
+          type: integer
+          format: int64
+          example: 10
+        userID:
+          type: integer
+          format: int64
+          example: 198772
+        platform:
+          $ref: '#/components/schemas/Platform'
+        creation:
+          $ref: '#/components/schemas/Creation'
+        text:
+          type: string
+          example: 'Enjoy my newest album'
+    Platform:
+      type: string
+      enum:
+          - spotify
+          - soundcloud
+          - apple-musi
+    Date:
+      type: string
+      format: POSIX-default
+      example: mm/dd/yy hh:mm:ss
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        profile_picture:
+          type: string
+          format: byte
+        about_me:
+          type: string
+          example: I love rock'n roll so put another dime in the jukebox
+        service_token_pairs:
+          type: string
+          example: 
+
