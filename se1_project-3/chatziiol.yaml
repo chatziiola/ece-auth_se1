@@ -95,7 +95,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/Rating'
       responses:
         '200':
           description: Successful operation
@@ -159,7 +159,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/Share'
       responses:
         '200':
           description: Successful operation
@@ -223,7 +223,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/Import'
       responses:
         '200':
           description: Successful operation
@@ -287,7 +287,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/Soundbite'
       responses:
         '200':
           description: Successful operation
@@ -659,4 +659,3 @@ components:
           example: 1
       xml:
         name: user
-
