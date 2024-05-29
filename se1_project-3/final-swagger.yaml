@@ -53,7 +53,6 @@ paths:
             type: array
             items:
               type: string
-      security: []
       responses:
         '200':
           description: Music Entities found
@@ -65,6 +64,11 @@ paths:
                   entities:
                     items:
                       $ref: '#/components/schemas/MusicEntity'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+          
   /music-entity/{id}:
     get:
       tags:
@@ -691,50 +695,6 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 
-  /searchMusicEntity:
-    get:
-      tags:
-        - music-entity
-      summary: Search for a music entity
-      operationId: searchMusic
-      parameters:
-        - name: ID
-          in: query
-          schema:
-            type: integer
-            format: int64
-        - name: date
-          in: query
-          schema:
-            $ref: '#/components/schemas/Date'
-        - name: type
-          in: query
-          schema:
-            type: string
-            enum: ['artist','song','playlist','album']
-        - name: keywords
-          in: query
-          schema:
-            type: array
-            items:
-              type: string
-        - name: name
-          in: query
-          schema:
-            type: string
-      responses:
-        '200':
-          description: 'Music entities found'
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/MusicEntity'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
 components:
   securitySchemes:
     ApiKeyAuth:
