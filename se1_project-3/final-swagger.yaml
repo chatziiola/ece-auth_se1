@@ -18,6 +18,10 @@ tags:
     description: Collection of all music entities related endpoints of the app
   - name: user
     description: Application endpoints about user
+
+security:
+  - ApiKeyAuth: []
+
 paths:
   /music-entity:
     get:
@@ -49,6 +53,7 @@ paths:
             type: array
             items:
               type: string
+      security: []
       responses:
         '200':
           description: Music Entities found
@@ -73,6 +78,7 @@ paths:
           schema:
             type: integer
             format: int64
+      security: []
       responses:
         '200':
           description: Successful operation
@@ -92,6 +98,7 @@ paths:
           required: false
           schema:
             type: string
+      security: []
       responses:
         '200':
           description: Successful operation
@@ -117,6 +124,7 @@ paths:
           schema:
             type: integer
             format: int64
+      security: []
       responses:
         '200':
           description: Successful operation
@@ -136,6 +144,7 @@ paths:
           required: false
           schema:
             type: string
+      security: []
       responses:
         '200':
           description: Successful operation
@@ -161,6 +170,7 @@ paths:
           schema:
             type: integer
             format: int64
+      security: []
       responses:
         '200':
           description: Successful operation
@@ -180,6 +190,7 @@ paths:
           required: false
           schema:
             type: string
+      security: []
       responses:
         '200':
           description: Successful operation
@@ -205,6 +216,7 @@ paths:
           schema:
             type: integer
             format: int64
+      security: []
       responses:
         '200':
           description: Successful operation
@@ -224,6 +236,7 @@ paths:
           required: false
           schema:
             type: string
+      security: []
       responses:
         '200':
           description: Successful operation
@@ -249,6 +262,7 @@ paths:
           schema:
             type: integer
             format: int64
+      security: []
       responses:
         '200':
           description: Successful operation
@@ -318,7 +332,7 @@ paths:
     post:
       tags:
         - user
-      summary: Creates a rating 
+      summary: Creates a rating
       description: This can only be done by the logged in user.
       operationId: postRating
       parameters:
@@ -383,7 +397,7 @@ paths:
     post:
       tags:
         - user
-      summary: Creates a share 
+      summary: Creates a share
       description: This can only be done by the logged in user.
       operationId: postShare
       parameters:
@@ -447,7 +461,7 @@ paths:
     post:
       tags:
         - user
-      summary: Creates a import 
+      summary: Creates a import
       description: This can only be done by the logged in user.
       operationId: postImport
       parameters:
@@ -515,7 +529,7 @@ paths:
     post:
       tags:
         - user
-      summary: Creates a soundbite 
+      summary: Creates a soundbite
       description: This can only be done by the logged in user.
       operationId: postSoundbite
       parameters:
@@ -582,6 +596,7 @@ paths:
                   description: The authentication toke provided by the streaming service
               required:
                 - code
+      security: []
       responses:
         '200':
           description: External Service successfully linked
@@ -616,6 +631,7 @@ paths:
               - spotify
               - soundcloud
               - apple-music
+      security: []
       responses:
         '200':
           description: Successful retrieval
@@ -720,6 +736,11 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Wavelength-Api-Key
   responses:
     Unauthorized:
       description: User is unauthorized, you need an API key to access this resource!
@@ -866,7 +887,7 @@ components:
         artists:
           type: array
           items:
-            $ref: '#/components/schemas/Artist'            
+            $ref: '#/components/schemas/Artist'
     Song:
       type: object
       properties:
@@ -880,7 +901,8 @@ components:
           type: integer
           format: int64
         album:
-          $ref: '#/components/schemas/Album'
+          type: integer
+          format: int64
     Album:
       type: object
       properties:
@@ -904,7 +926,8 @@ components:
         artists:
           type: array
           items:
-            $ref: '#/components/schemas/Artist'
+            type: integer
+            format: int64
     Artist:
       type: object
       properties:
@@ -917,7 +940,8 @@ components:
         albums:
           type: array
           items:
-            $ref: '#/components/schemas/Album'
+            type: integer
+            format: int64
         image:
           type: string
           format: byte
@@ -1060,7 +1084,7 @@ components:
       enum:
           - spotify
           - soundcloud
-          - apple-musi
+          - apple-music
     Date:
       type: string
       format: POSIX-default
@@ -1079,5 +1103,5 @@ components:
           example: I love rock'n roll so put another dime in the jukebox
         service_token_pairs:
           type: string
-          example: 
+          example:
 
