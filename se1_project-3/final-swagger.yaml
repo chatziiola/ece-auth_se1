@@ -675,7 +675,11 @@ paths:
                 $ref: '#/components/schemas/Feed'
         '401':
           $ref: '#/components/responses/Unauthorized'
+<<<<<<< Updated upstream
   /getRecommendedUsers/{userID}:
+=======
+  /get-recommended-users/{userID}:
+>>>>>>> Stashed changes
     get:
       tags:
         - user
@@ -698,7 +702,11 @@ paths:
                 $ref: '#/components/schemas/UserIDs'
         '401':
           $ref: '#/components/responses/Unauthorized'
+<<<<<<< Updated upstream
   /user/{userID}/add_follower:
+=======
+  /user/{userID}/add-follower:
+>>>>>>> Stashed changes
     post:
       tags:
         - user
@@ -1307,4 +1315,8 @@ components:
           example: 200
         message:
           type: string
+<<<<<<< Updated upstream
           example: "Successfully completed API operation"
+=======
+          example: "Successfully completed API operation"
+>>>>>>> Stashed changes
