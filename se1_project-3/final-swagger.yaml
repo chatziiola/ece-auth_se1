@@ -15,9 +15,13 @@ servers:
 - url:  http://api.example.com:1337/api/v1
 tags:
   - name: music-entity
-    description: Collection of all music entities related endpoints of the app
+    description: Endpoints about music entity resources
+  - name: event
+    description: Endpoints about event resources
   - name: user
-    description: Application endpoints about user
+    description: Endpoints about the user resource
+  - name: post
+    description: Endpoints about the post resource
 
 security:
   - ApiKeyAuth: []
@@ -302,7 +306,7 @@ paths:
   /user/{userID}/rating:
     get:
       tags:
-        - user
+        - event
       summary: Views a specific rating from user
       description: Views a specific rating from user
       operationId: getRating
@@ -335,7 +339,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     post:
       tags:
-        - user
+        - event
       summary: Creates a rating
       description: This can only be done by the logged in user.
       operationId: postRating
@@ -367,7 +371,7 @@ paths:
   /user/{userID}/share:
     get:
       tags:
-        - user
+        - event
       summary: Views a specific share from user
       description: Views a specific share from user
       operationId: getShare
@@ -400,7 +404,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     post:
       tags:
-        - user
+        - event
       summary: Creates a share
       description: This can only be done by the logged in user.
       operationId: postShare
@@ -434,7 +438,7 @@ paths:
   /user/{userID}/import:
     get:
       tags:
-        - user
+        - event
       summary: Views a specific import from user
       description: Views a specific import from user
       operationId: getImport
@@ -464,7 +468,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
     post:
       tags:
-        - user
+        - event
       summary: Creates a import
       description: This can only be done by the logged in user.
       operationId: postImport
@@ -499,7 +503,7 @@ paths:
   /user/{userID}/soundbite:
     get:
       tags:
-        - user
+        - event
       summary: Views a specific soundbite from user
       description: Views a specific soundbite from user
       operationId: getSoundbite
@@ -532,7 +536,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
     post:
       tags:
-        - user
+        - event
       summary: Creates a soundbite
       description: This can only be done by the logged in user.
       operationId: postSoundbite
@@ -651,7 +655,7 @@ paths:
   /feed/{user-id}:
     get:
       tags:
-        - user
+        - post
       summary: Get user's feed
       operationId: getUserFeed
       parameters:
@@ -1241,3 +1245,4 @@ components:
         message:
           type: string
           example: "Successfully completed API operation"
+
