@@ -568,14 +568,14 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
-  /user/{user-id}/external-link/{platform}:
+  /user/{userID}/external-link/{platform}:
     post:
       tags:
         - user
       description: Complete authentication using the aquired authentication token
       operationId: completeAuthentication
       parameters:
-        - name: user-id
+        - name: userID
           in: path
           required: true
           description: ID of the user's Wavelength account
@@ -616,13 +616,13 @@ paths:
                   message:
                     type: string
                     example: Linking was successful
-  /user/{user-id}/external-creations/{platform}:
+  /user/{userID}/external-creations/{platform}:
     get:
       tags:
         - music-entity
       description: Retrieve the users creations from the specific platform
       parameters:
-        - name: user-id
+        - name: userID
           in: path
           required: true
           description: ID of the user's Wavelength account
@@ -652,14 +652,14 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Song'
-  /feed/{user-id}:
+  /feed/{userID}:
     get:
       tags:
         - post
       summary: Get user's feed
       operationId: getUserFeed
       parameters:
-        - name: user-id
+        - name: userID
           in: path
           required: true
           description: User's identification number in system.
@@ -675,14 +675,14 @@ paths:
                 $ref: '#/components/schemas/Feed'
         '401':
           $ref: '#/components/responses/Unauthorized'
-  /getRecommendedUsers/{user-id}:
+  /getRecommendedUsers/{userID}:
     get:
       tags:
         - user
       summary: Get recommended users for the specific user
       operationId: getRecommended
       parameters:
-        - name: user-id
+        - name: userID
           in: path
           required: true
           description: User's identification number in system.
@@ -698,14 +698,14 @@ paths:
                 $ref: '#/components/schemas/UserIDs'
         '401':
           $ref: '#/components/responses/Unauthorized'
-  /user/{user_id}/add_follower:
+  /user/{userID}/add_follower:
     post:
       tags:
         - user
       summary: Add a new follower for a user
       operationId: addUserFollower
       parameters:
-        - name: user_id
+        - name: userID
           in: path
           description: ID of the user
           required: true
@@ -730,14 +730,14 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-  /user/{user_id}/followers:
+  /user/{userID}/followers:
     get:
       tags:
         - user
       summary: Returns the followers of a user
       operationId: getUserFollowers
       parameters:
-        - name: user_id
+        - name: userID
           in: path
           description: ID of the user
           required: true
@@ -755,14 +755,14 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
-  /user/{user_id}/following:
+  /user/{userID}/following:
     get:
       tags:
         - user
       summary: Returns the followings of a user
       operationId: getUserFollowing
       parameters:
-        - name: user_id
+        - name: userID
           in: path
           description: ID of the user
           required: true
@@ -780,14 +780,14 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
-  /user/{user_id}/posts:
+  /user/{userID}/posts:
     get:
       tags:
         - post
       summary: Gets a user's posts
       operationId: getUserPosts
       parameters:
-        - name: user_id
+        - name: userID
           in: path
           description: ID of the user
           required: true
@@ -814,7 +814,7 @@ paths:
       summary: Gets a post by ID
       operationId: getPost
       parameters:
-        - name: post_id
+        - name: postID
           in: query
           description: ID of the post
           required: true
@@ -855,7 +855,70 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
-
+  /post/{postID}/react:
+    post:
+      tags:
+        - post
+      summary: Adds a reaction to a post
+      operationId: react
+      parameters:
+        - name: postID
+          in: path
+          description: ID of the post
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: The reaction to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Reaction'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'          
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /post/{postID}/comment:
+    post:
+      tags:
+        - post
+      summary: Adds a comment to a post
+      operationId: comment
+      parameters:
+        - name: postID
+          in: path
+          description: ID of the post
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: The comment to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'          
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
 components:
   securitySchemes:
     ApiKeyAuth:
