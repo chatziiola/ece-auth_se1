@@ -712,7 +712,7 @@ paths:
           schema:
             type: integer
             format: int64
-        - name: follower
+        - name: followerID
           in: query
           description: The ID of the follower
           required: true
