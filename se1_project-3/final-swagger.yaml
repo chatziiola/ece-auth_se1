@@ -72,7 +72,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-          
+
   /music-entity/{id}:
     get:
       tags:
@@ -675,11 +675,7 @@ paths:
                 $ref: '#/components/schemas/Feed'
         '401':
           $ref: '#/components/responses/Unauthorized'
-<<<<<<< Updated upstream
-  /getRecommendedUsers/{userID}:
-=======
   /get-recommended-users/{userID}:
->>>>>>> Stashed changes
     get:
       tags:
         - user
@@ -702,11 +698,7 @@ paths:
                 $ref: '#/components/schemas/UserIDs'
         '401':
           $ref: '#/components/responses/Unauthorized'
-<<<<<<< Updated upstream
-  /user/{userID}/add_follower:
-=======
   /user/{userID}/add-follower:
->>>>>>> Stashed changes
     post:
       tags:
         - user
@@ -733,7 +725,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OperationResponse'          
+                $ref: '#/components/schemas/OperationResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -810,7 +802,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Post'          
+                  $ref: '#/components/schemas/Post'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -835,7 +827,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Post'          
+                $ref: '#/components/schemas/Post'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -858,7 +850,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Post'          
+                $ref: '#/components/schemas/Post'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -890,7 +882,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Post'          
+                $ref: '#/components/schemas/Post'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -922,7 +914,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Post'          
+                $ref: '#/components/schemas/Post'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -1315,8 +1307,4 @@ components:
           example: 200
         message:
           type: string
-<<<<<<< Updated upstream
           example: "Successfully completed API operation"
-=======
-          example: "Successfully completed API operation"
->>>>>>> Stashed changes
