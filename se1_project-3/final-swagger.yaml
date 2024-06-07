@@ -895,8 +895,7 @@ components:
         entity-id:
           $ref: '#/components/schemas/EntityId'
         album-id:
-          type: integer
-          format: int64
+          $ref: '#/components/schemas/EntityId'
     Album:
       type: object
       properties:
@@ -944,7 +943,7 @@ components:
         songs:
           type: array
           items:
-            $ref: '#/components/schemas/Song'
+            $ref: '#/components/schemas/EntityId'
         entity-id:
           $ref: '#/components/schemas/EntityId'
         creator-id:
