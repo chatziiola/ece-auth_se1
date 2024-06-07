@@ -63,21 +63,16 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  entities:
-                    items:
-                      $ref: '#/components/schemas/MusicEntity'
+                $ref: '#/components/schemas/MusicEntityPack'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-
   /music-entity/{id}:
     get:
       tags:
         - music-entity
-      description: Get a specific music entity by ID
+      description: Get a specific music entity by ID. Return pack's arrays contain only one item.
       operationId: getMusicEntitybyId
       parameters:
         - name: id
@@ -86,27 +81,6 @@ paths:
           schema:
             type: integer
             format: int64
-      security: []
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MusicEntity'
-  /music-entity/song:
-    get:
-      tags:
-        - music-entity
-      description: Get collection of songs
-      operationId: getSong
-      parameters:
-        - name: name
-          in: query
-          required: false
-          schema:
-            type: string
-      security: []
       responses:
         '200':
           description: Successful operation
@@ -115,169 +89,16 @@ paths:
               schema:
                 type: object
                 properties:
-                  songs:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Song'
-  /music-entity/song/{id}:
-    get:
-      tags:
-        - music-entity
-      description: Get a specific song by entity ID
-      operationId: getSongbyId
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-      security: []
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Song'
-  /music-entity/album:
-    get:
-      tags:
-        - music-entity
-      description: Get collection of albums
-      operationId: getAlbum
-      parameters:
-        - name: name
-          in: query
-          required: false
-          schema:
-            type: string
-      security: []
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  albums:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Album'
-  /music-entity/album/{id}:
-    get:
-      tags:
-        - music-entity
-      description: Get a specific album by entity ID
-      operationId: getAlbumbyId
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-      security: []
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Album'
-  /music-entity/artist:
-    get:
-      tags:
-        - music-entity
-      description: Get collection of artists
-      operationId: getArtist
-      parameters:
-        - name: name
-          in: query
-          required: false
-          schema:
-            type: string
-      security: []
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  artists:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Artist'
-  /music-entity/artist/{id}:
-    get:
-      tags:
-        - music-entity
-      description: Get a specific artist by entity ID
-      operationId: getArtistbyId
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-      security: []
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Artist'
-  /music-entity/playlist:
-    get:
-      tags:
-        - music-entity
-      description: Get collection of playlists
-      operationId: getPlaylist
-      parameters:
-        - name: name
-          in: query
-          required: false
-          schema:
-            type: string
-      security: []
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  playlists:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Playlist'
-  /music-entity/playlist/{id}:
-    get:
-      tags:
-        - music-entity
-      description: Get a specific playlist by entity ID
-      operationId: getPlaylistbyId
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-      security: []
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Playlist'
+                  entity-pack:
+                    $ref: '#/components/schemas/MusicEntityPack'
+                  return-type:
+                    type: string
+                    description: The type of the entity returned.
+                    enum:
+                      - song
+                      - album
+                      - artist
+                      - playlist
   /user:
     get:
       tags:
@@ -604,7 +425,6 @@ paths:
                   description: The authentication toke provided by the streaming service
               required:
                 - code
-      security: []
       responses:
         '200':
           description: External Service successfully linked
@@ -619,7 +439,7 @@ paths:
   /user/{userID}/external-creations/{platform}:
     get:
       tags:
-        - music-entity
+        - user
       description: Retrieve the users creations from the specific platform
       parameters:
         - name: userID
@@ -639,7 +459,6 @@ paths:
               - spotify
               - soundcloud
               - apple-music
-      security: []
       responses:
         '200':
           description: Successful retrieval
@@ -1044,40 +863,22 @@ components:
           format: int64
         content:
           type: string
-    MusicEntity:
+    MusicEntityPack:
       type: object
+      description: Object that contains a mix of all possible music entity arrays
       properties:
-        duration:
-          type: integer
-          format: seconds
-          example: 300
-        image:
-          type: string
-          format: byte
-        entity-id:
-          type: integer
-          format: int64
-          example: 15
-        genre:
-          $ref: '#/components/schemas/Genre'
-        name:
-          type: string
-          example: Yparxo
-        entity-type:
-          type: string
-          enum:
-            - song
-            - album
-            - artist
-            - playlist
-        albums:
-          type: array
-          items:
-            $ref: '#/components/schemas/Album'
         songs:
           type: array
           items:
             $ref: '#/components/schemas/Song'
+        albums:
+          type: array
+          items:
+            $ref: '#/components/schemas/Album'
+        playlists:
+          type: array
+          items:
+            $ref: '#/components/schemas/Playlist'
         artists:
           type: array
           items:
@@ -1092,9 +893,8 @@ components:
           type: integer
           format: minutes-seconds
         entity-id:
-          type: integer
-          format: int64
-        album:
+          $ref: '#/components/schemas/EntityId'
+        album-id:
           type: integer
           format: int64
     Album:
@@ -1104,24 +904,22 @@ components:
           type: string
           example: The Wall
         entity-id:
-          type: integer
-          format: int64
+          $ref: '#/components/schemas/EntityId'
         genre:
-            $ref: '#/components/schemas/Genre'
-        songs:
+          $ref: '#/components/schemas/Genre'
+        songs-ids:
           type: array
           items:
-            $ref: '#/components/schemas/Song'
+            $ref: '#/components/schemas/EntityId'
         image:
           type: string
           format: byte
         date:
           $ref: '#/components/schemas/Date'
-        artists:
+        artists-ids:
           type: array
           items:
-            type: integer
-            format: int64
+            $ref: '#/components/schemas/EntityId'
     Artist:
       type: object
       properties:
@@ -1129,13 +927,11 @@ components:
           type: string
           example: Pink Floyd
         entity-id:
-          type: integer
-          format: int64
+          $ref: '#/components/schemas/EntityId'
         albums:
           type: array
           items:
-            type: integer
-            format: int64
+            $ref: '#/components/schemas/EntityId'
         image:
           type: string
           format: byte
@@ -1150,8 +946,7 @@ components:
           items:
             $ref: '#/components/schemas/Song'
         entity-id:
-          type: integer
-          format: int64
+          $ref: '#/components/schemas/EntityId'
         creator-id:
           type: integer
           format: int64
@@ -1185,20 +980,10 @@ components:
         image:
           type: string
           format: byte
+        music-entity-pack:
+          $ref: '#/components/schemas/MusicEntityPack'
         genre:
           $ref: '#/components/schemas/Genre'
-        artists:
-          type: array
-          items:
-            $ref: '#/components/schemas/Artist'
-        songs:
-          type: array
-          items:
-            $ref: '#/components/schemas/Song'
-        albums:
-          type: array
-          items:
-            $ref: '#/components/schemas/Album'
     Soundbite:
       type: object
       properties:
@@ -1232,7 +1017,7 @@ components:
           format: int64
           example: 198772
         musicEntity:
-          $ref: '#/components/schemas/MusicEntity'
+          $ref: '#/components/schemas/MusicEntityPack'
         rating:
           type: integer
           example: 9 # constraints
@@ -1251,7 +1036,7 @@ components:
           format: int64
           example: 198772
         musicEntity:
-          $ref: '#/components/schemas/MusicEntity'
+          $ref: '#/components/schemas/MusicEntityPack'
         text:
           type: string
           example: 'I really liked this one'
@@ -1283,6 +1068,10 @@ components:
       type: string
       format: POSIX-default
       example: mm/dd/yy hh:mm:ss
+    EntityId:
+      type: string
+      description: string type id that is unique for each music entity
+      example: moneypinkfloyd102562
     User:
       type: object
       properties:
