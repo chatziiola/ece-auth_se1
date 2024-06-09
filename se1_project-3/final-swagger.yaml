@@ -465,12 +465,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  user-songs:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Song'
+                $ref: '#/components/schemas/Song'
   /feed/{userID}:
     get:
       tags:
