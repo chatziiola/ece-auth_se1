@@ -128,8 +128,8 @@ paths:
     get:
       tags:
         - event
-      summary: Views a specific rating from user
-      description: Views a specific rating from user
+      summary: Returns a collection of matching ratings
+      description: This (GET) endpoint returns an array of ratings. By default this returns a number of ratings that belong to user (userID), from newest to oldest. If the optional parameter, ratingID, is also supplied then this list gets filtered bassed on that parameter resulting in an empty list in the case of no match, or to a single-entry array containing the rating that matches ratingID.
       operationId: getRating
       parameters:
         - name: userID
@@ -141,7 +141,7 @@ paths:
         - name: ratingID
           in: query
           description: The ratingID
-          required: true
+          required: false
           schema:
             type: string
       responses:
@@ -150,10 +150,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Rating'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Rating'
+                type: array
+                items:
+                 $ref: '#/components/schemas/Rating'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -171,224 +170,188 @@ paths:
           required: true
           schema:
             type: string
-        - name: rating
-          in: query
-          description: The rating
-          required: true
-          schema:
-            $ref: '#/components/schemas/Rating'
       requestBody:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Rating'
+              $ref: '#/components/schemas/Rating'
       responses:
         '200':
           description: Successful operation
         '401':
           $ref: '#/components/responses/Unauthorized'
   /user/{userID}/share:
-    get:
-      tags:
-        - event
-      summary: Views a specific share from user
-      description: Views a specific share from user
-      operationId: getShare
-      parameters:
-        - name: userID
-          in: path
-          description: The userID, whose rating we want to access
-          required: true
-          schema:
-            type: string
-        - name: shareID
-          in: query
-          description: The shareID
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
+      get:
+        tags:
+            - event
+        summary: Returns a collection of matching shares
+        description: This (GET) endpoint returns an array of shares. By default this returns a number of shares that belong to user (userID), from newest to oldest. If the optional parameter, shareID, is also supplied then this list gets filtered bassed on that parameter resulting in an empty list in the case of no match, or to a single-entry array containing the share that matches shareID.
+        operationId: getShare
+        parameters:
+            - name: userID
+              in: path
+              description: The userID, whose rating we want to access
+              required: true
               schema:
-                $ref: '#/components/schemas/Share'
-            application/xml:
+                type: string
+            - name: shareID
+              in: query
+              description: The shareID
+              required: false
               schema:
-                $ref: '#/components/schemas/Share'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-    post:
-      tags:
-        - event
-      summary: Creates a share
-      description: This can only be done by the logged in user.
-      operationId: postShare
-      parameters:
-        - name: userID
-          in: path
-          description: The user name for login
-          required: true
-          schema:
-            type: string
-        - name: share
-          in: query
-          description: The shareID
-          required: true
-          schema:
-            $ref: '#/components/schemas/Share'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Share'
-      responses:
-        '200':
-          description: Successful operation
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
+                type: string
+        responses:
+            '200':
+              description: Successful operation
+              content:
+                application/json:
+                  schema:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Share'
+            '401':
+              $ref: '#/components/responses/Unauthorized'
+            '404':
+              $ref: '#/components/responses/NotFound'
+      post:
+        tags:
+            - event
+        summary: Creates a share
+        description: This can only be done by the logged in user.
+        operationId: postShare
+        parameters:
+            - name: userID
+              in: path
+              description: The user name for login
+              required: true
+              schema:
+                type: string
+        requestBody:
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Share'
+        responses:
+            '200':
+                description: Successful operation
+            '400':
+                $ref: '#/components/responses/BadRequest'
+            '401':
+               $ref: '#/components/responses/Unauthorized'
   /user/{userID}/import:
-    get:
-      tags:
-        - event
-      summary: Views a specific import from user
-      description: Views a specific import from user
-      operationId: getImport
-      parameters:
-        - name: userID
-          in: path
-          description: The userID, whose rating we want to access
-          required: true
-          schema:
-            type: string
-        - name: importID
-          in: query
-          description: The importID
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
+      get:
+        tags:
+            - event
+        summary: Returns a collection of matching imports
+        description: This (GET) endpoint returns an array of imports. By default this returns a number of imports that belong to user (userID), from newest to oldest. If the optional parameter, importID, is also supplied then this list gets filtered bassed on that parameter resulting in an empty list in the case of no match, or to a single-entry array containing the import that matches importID.
+        operationId: getImport
+        parameters:
+            - name: userID
+              in: path
+              description: The userID, whose import we want to access
+              required: true
               schema:
-                $ref: '#/components/schemas/Import'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-    post:
-      tags:
-        - event
-      summary: Creates a import
-      description: This can only be done by the logged in user.
-      operationId: postImport
-      parameters:
-        - name: userID
-          in: path
-          description: The user name for login
-          required: true
-          schema:
-            type: string
-        - name: import
-          in: query
-          description: The importID
-          required: true
-          schema:
-          # This one should be changed - see how
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Import'
-      responses:
-        '200':
-          description: Successful operation
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
+                type: string
+            - name: importID
+              in: query
+              description: The importID
+              required: false
+              schema:
+                type: string
+        responses:
+            '200':
+              description: Successful operation
+              content:
+                application/json:
+                  schema:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Import'
+            '401':
+              $ref: '#/components/responses/Unauthorized'
+            '404':
+              $ref: '#/components/responses/NotFound'
+      post:
+        tags:
+            - event
+        summary: Creates a import
+        description: This can only be done by the logged in user.
+        operationId: postImport
+        parameters:
+            - name: userID
+              in: path
+              description: The user name for login
+              required: true
+              schema:
+                type: string
+        requestBody:
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Import'
+        responses:
+            '200':
+              description: Successful operation
+            '401':
+              $ref: '#/components/responses/Unauthorized'
   /user/{userID}/soundbite:
-    get:
-      tags:
-        - event
-      summary: Views a specific soundbite from user
-      description: Views a specific soundbite from user
-      operationId: getSoundbite
-      parameters:
-        - name: userID
-          in: path
-          description: The userID, whose rating we want to access
-          required: true
-          schema:
-            type: string
-        - name: soundbiteID
-          in: query
-          description: The soundbiteID
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
+      get:
+        tags:
+            - event
+        summary: Returns a collection of matching soundbites
+        description: This (GET) endpoint returns an array of soundbites. By default this returns a number of soundbites that belong to user (userID), from newest to oldest. If the optional parameter, soundbiteID, is also supplied then this list gets filtered bassed on that parameter resulting in an empty list in the case of no match, or to a single-entry array containing the soundbite that matches soundbiteID.
+        operationId: getSoundbite
+        parameters:
+            - name: userID
+              in: path
+              description: The userID, whose soundbite we want to access
+              required: true
               schema:
-                $ref: '#/components/schemas/Soundbite'
-            application/xml:
+                type: string
+            - name: soundbiteID
+              in: query
+              description: The soundbiteID
+              required: false
               schema:
-                $ref: '#/components/schemas/Soundbite'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-    post:
-      tags:
-        - event
-      summary: Creates a soundbite
-      description: This can only be done by the logged in user.
-      operationId: postSoundbite
-      parameters:
-        - name: userID
-          in: path
-          description: The user name for login
-          required: true
-          schema:
-            type: string
-        - name: soundbite
-          in: query
-          description: The soundbiteID
-          required: true
-          schema:
-          # This one should be changed - see how
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Soundbite'
-      responses:
-        '200':
-          description: Successful operation
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
+                type: string
+        responses:
+            '200':
+              description: Successful operation
+              content:
+                application/json:
+                  schema:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Soundbite'
+            '401':
+              $ref: '#/components/responses/Unauthorized'
+            '404':
+              $ref: '#/components/responses/NotFound'
+      post:
+        tags:
+            - event
+        summary: Creates a soundbite
+        description: This can only be done by the logged in user.
+        operationId: postSoundbite
+        parameters:
+            - name: userID
+              in: path
+              description: The user name for login
+              required: true
+              schema:
+                type: string
+        requestBody:
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Soundbite'
+        responses:
+            '200':
+              description: Successful operation
+            '401':
+              $ref: '#/components/responses/Unauthorized'
   /user/{userID}/external-link/{platform}:
     post:
       tags:
